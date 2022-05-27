@@ -46,20 +46,25 @@ namespace WelcomeToHell
             if (!isPrinting.Value)
             {
                 isPrinting.Value = true;
-                Scheduler.MainThread.Schedule(5000f, PrintDone);
+                // printing for 8 seconds...
+                Scheduler.MainThread.Schedule(8000f, PrintDone);
             };
         }
 
         private void PrintDone()
         {
-            isPrinting.Value = false;
-            MessageBroker.Default.Publish(new PrintDoneMessage());
-            printsInQueue.Value--;
-
-            if (printsInQueue.Value > 0)
+            // 1s cooldown... 
+            Scheduler.MainThread.Schedule(1000f, () =>
             {
-                StartPrinting();
-            }
+                isPrinting.Value = false;
+                MessageBroker.Default.Publish(new PrintDoneMessage());
+                printsInQueue.Value--;
+
+                if (printsInQueue.Value > 0)
+                {
+                    StartPrinting();
+                }
+            });
         }
     }
 }
