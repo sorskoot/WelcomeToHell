@@ -95,6 +95,11 @@ PrefabInstance:
     - target: {fileID: 4516476024151540189, guid: 05c7641f2780fc94c8a4cfca1b8b9f5b,
         type: 3}
       propertyPath: m_Name
+      value: Stamp Lust
+      objectReference: {fileID: 0}
+    - target: {fileID: 4516476024151540189, guid: 05c7641f2780fc94c8a4cfca1b8b9f5b,
+        type: 3}
+      propertyPath: m_TagString
       value: Stamp
       objectReference: {fileID: 0}
     - target: {fileID: 4775467046883155000, guid: 05c7641f2780fc94c8a4cfca1b8b9f5b,

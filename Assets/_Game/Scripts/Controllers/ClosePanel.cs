@@ -1,24 +1,24 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ClosePanel : MonoBehaviour
+namespace WelcomeToHell.Controllers
 {
-    [SerializeField] private GameObject Panel;
-    
-    private void OnCollisionEnter(Collision collision)
+    public class ClosePanel : MonoBehaviour
     {
-        if (collision.gameObject.CompareTag("Hand"))
-        {
-            Panel.SetActive(false);
-        }
-        
-    }
+        [SerializeField] private GameObject Panel;
 
-    public void HandleClick()
-    {
-        enabled = false;
-        transform.position.Set(0, 0, 100);
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Hand"))
+            {
+                Panel.SetActive(false);
+            }
+
+        }
+
+        public void HandleClick()
+        {
+            enabled = false;
+            transform.position.Set(0, 0, 100);
+        }
     }
 }

@@ -1,39 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using Sorskoot.Ioc;
 using UniRx;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-using WelcomeToHell;
 
-public class ContractSpawner : MonoBehaviour
+namespace WelcomeToHell.Controllers
 {
-    [SerializeField] private GameObject contractPrefab;
-    [SerializeField] private XRInteractionManager interactionManager;
-    
-    private SnapDependency<IGameState> gameState;
-    private bool wasPrinting;
-
-    private void Start()
+    public class ContractSpawner : MonoBehaviour
     {
-        gameState.Value.IsPrinting.Subscribe(IsPrintingChanged).AddTo(this);
-    }
+        [SerializeField] private GameObject contractPrefab;
+        [SerializeField] private XRInteractionManager interactionManager;
 
-    private void IsPrintingChanged(bool isPrinting)
-    {
-        if (isPrinting && !wasPrinting)
+        private SnapDependency<IGameState> gameState;
+        private bool wasPrinting;
+
+        private void Start()
         {
-            wasPrinting = true;
+            gameState.Value.IsPrinting.Subscribe(IsPrintingChanged).AddTo(this);
         }
 
-        if (!isPrinting && wasPrinting)
+        private void IsPrintingChanged(bool isPrinting)
         {
-            var newContract = Instantiate(contractPrefab);
-            newContract.transform.position = gameObject.transform.position;
-            newContract.transform.rotation = gameObject.transform.rotation;
-            newContract.GetComponent<XRGrabInteractable>().interactionManager = interactionManager;
-            newContract.GetComponent<Rigidbody>().useGravity = false;
-            wasPrinting = false;
+            if (isPrinting && !wasPrinting)
+            {
+                wasPrinting = true;
+            }
+
+            if (!isPrinting && wasPrinting)
+            {
+                var newContract = Instantiate(contractPrefab);
+                newContract.transform.position = gameObject.transform.position;
+                newContract.transform.rotation = gameObject.transform.rotation;
+                newContract.GetComponent<XRGrabInteractable>().interactionManager = interactionManager;
+                newContract.GetComponent<Rigidbody>().useGravity = false;
+                wasPrinting = false;
+            }
         }
     }
 }

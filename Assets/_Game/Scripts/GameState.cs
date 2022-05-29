@@ -11,8 +11,12 @@ namespace WelcomeToHell
         IReadOnlyReactiveProperty<bool> ShowHelp { get; }
         IReadOnlyReactiveProperty<bool> IsPrinting { get; }
         IReadOnlyReactiveProperty<int> PrintsInQueue { get; }
+        IReadOnlyReactiveProperty<bool> ContractOnTable { get; }
 
         void AddPrintToQueue();
+        void PlaceContractOnTable();
+        void TakeContractFromTable();
+        void Stamp(string stampName);
     }
 
     public class GameState:IGameState
@@ -29,10 +33,15 @@ namespace WelcomeToHell
         public IReadOnlyReactiveProperty<bool> IsPrinting => isPrinting;
         
         private readonly IntReactiveProperty printsInQueue = new IntReactiveProperty(0);
+        public IReadOnlyReactiveProperty<int> PrintsInQueue => printsInQueue;
+        
+        private readonly BoolReactiveProperty contractOnTable = new BoolReactiveProperty(false);
+        public IReadOnlyReactiveProperty<bool> ContractOnTable => contractOnTable;
+        
         private readonly ILogger logger;
         
-        public IReadOnlyReactiveProperty<int> PrintsInQueue { get; }
         
+
         public void AddPrintToQueue()
         {
             printsInQueue.Value++;
@@ -65,6 +74,25 @@ namespace WelcomeToHell
                     StartPrinting();
                 }
             });
+        }
+
+        public void PlaceContractOnTable()
+        {
+            contractOnTable.Value = true;
+        }
+
+        public void TakeContractFromTable()
+        {
+            contractOnTable.Value = false;
+        }
+
+        public void Stamp(string stampName)
+        {
+            // Only place stamp when contract is on the table
+            if (contractOnTable.Value)
+            {
+                MessageBroker.Default.Publish(new StampMessage(stampName));
+            }
         }
     }
 }
