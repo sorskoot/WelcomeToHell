@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using Sorskoot.Ioc;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-using ILogger = Sorskoot.Ioc.ILogger;
 
 namespace WelcomeToHell.Controllers
 {
@@ -23,11 +20,21 @@ namespace WelcomeToHell.Controllers
 
         private void OnSelectExited(SelectExitEventArgs args)
         {
+            var psop = args.interactableObject.transform.GetComponent<PutStampOnPaper>();
+            if (psop)
+            {
+                psop.PlacedDown(false);
+            }
             gameState.Value.TakeContractFromTable();
         }
 
         private void OnSelectEntered(SelectEnterEventArgs args)
         {
+            var psop = args.interactableObject.transform.GetComponent<PutStampOnPaper>();
+            if (psop)
+            {
+                psop.PlacedDown(true);
+            }
             gameState.Value.PlaceContractOnTable();
         }
     }

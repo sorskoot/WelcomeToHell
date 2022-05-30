@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6525428600196913265}
   - component: {fileID: 6321061496044461521}
   - component: {fileID: 5211457453052096016}
+  - component: {fileID: 5652683339368551658}
   m_Layer: 0
   m_Name: Contract
   m_TagString: Contract
@@ -212,6 +213,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   paperWithoutStamp: {fileID: 8478161744282629282}
   paperWithStamp: {fileID: 8478161742792855009}
+  StampName: 
+--- !u!114 &5652683339368551658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4589892892883535133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4a57b75d0614169b5bbf4a279982a90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8748544633413863923
 PrefabInstance:
   m_ObjectHideFlags: 0

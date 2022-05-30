@@ -13,12 +13,16 @@ namespace WelcomeToHell
         IReadOnlyReactiveProperty<bool> IsPrinting { get; }
         IReadOnlyReactiveProperty<int> PrintsInQueue { get; }
         IReadOnlyReactiveProperty<bool> ContractOnTable { get; }
+        IReadOnlyReactiveProperty<Sins?> CurrentSin { get; }
+        IReadOnlyReactiveProperty<int> Score { get; }
+        IReadOnlyReactiveProperty<int> Failures { get; }
 
         void AddPrintToQueue();
         void PlaceContractOnTable();
         void TakeContractFromTable();
         void Stamp(string stampName);
         void Start();
+        void ContractPlaced(string stampName);
     }
 
     public class GameState:IGameState
@@ -40,6 +44,16 @@ namespace WelcomeToHell
         private readonly BoolReactiveProperty contractOnTable = new BoolReactiveProperty(false);
         public IReadOnlyReactiveProperty<bool> ContractOnTable => contractOnTable;
         
+        private readonly ReactiveProperty<Sins?> currentSin = new ReactiveProperty<Sins?>(null);
+        public IReadOnlyReactiveProperty<Sins?> CurrentSin => currentSin;
+        
+        private readonly IntReactiveProperty score = new IntReactiveProperty(0);
+        public IReadOnlyReactiveProperty<int> Score => score;
+        
+        private readonly IntReactiveProperty failures = new IntReactiveProperty(0);
+        public IReadOnlyReactiveProperty<int> Failures => failures;
+
+
         private readonly ILogger logger;
         
         
@@ -88,10 +102,9 @@ namespace WelcomeToHell
             contractOnTable.Value = false;
         }
 
-        public void NewDeceased()
+        private void NewDeceased()
         {
-            Sins sin = (Sins)Random.Range(0, 7);
-            MessageBroker.Default.Publish(new NewDeceased(sin));
+            currentSin.SetValueAndForceNotify((Sins)Random.Range(0, 7));
         }
         
         public void Stamp(string stampName)
@@ -105,10 +118,34 @@ namespace WelcomeToHell
 
         public void Start()
         {
-            Scheduler.MainThread.Schedule(2000, () =>
+            failures.Value = 0;
+            score.Value = 0;
+            Scheduler.MainThread.Schedule(2000, NewDeceased);
+        }
+
+        public void ContractPlaced(string stampName)
+        {
+            if(Enum.TryParse(stampName.Split(' ')[1], out Sins sin))
             {
-                NewDeceased();
-            });
+                MessageBroker.Default.Publish(new ContractPlacedMessage());
+                Scheduler.MainThread.Schedule(2000, NewDeceased);
+                
+                if (sin == currentSin.Value)
+                {
+                    // Did it right
+                    score.Value++;
+                }
+                else
+                {
+                    failures.Value++;
+                    if (failures.Value == 3)
+                    {
+                        // You're fired!
+                        // start over
+                        Scheduler.MainThread.Schedule(5000, Start);
+                    }                    
+                }
+            }
         }
     }
 }

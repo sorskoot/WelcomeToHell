@@ -6,15 +6,15 @@ using UnityEngine;
 namespace WelcomeToHell.Controllers
 {
     [RequireComponent(typeof(Canvas))]
-    public class ShowOnNewDeceased : MonoBehaviour
+    public class ShowOnNewDeceased : GameStateBehavior
     {
         private void Start()
         {
-            MessageBroker.Default.Receive<NewDeceased>().Subscribe(OnNewDeceased).AddTo(this);
+            gameState.CurrentSin.Where(c=>c.HasValue).Subscribe(OnNewDeceased).AddTo(this);
             GetComponent<Canvas>().enabled = false;
         }
 
-        private void OnNewDeceased(NewDeceased _)
+        private void OnNewDeceased(Sins? _)
         {
             GetComponent<Canvas>().enabled = true;
         }

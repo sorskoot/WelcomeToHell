@@ -14,7 +14,12 @@ namespace WelcomeToHell.Controllers
         
         public string StampName = string.Empty;
         private bool hasStamp = false;
-        
+        private bool placed = false;
+
+        public void PlacedDown(bool placed)
+        {
+            this.placed = placed;
+        }
         private void Start()
         {
             MessageBroker.Default.Receive<StampMessage>().Subscribe(OnStampMessage).AddTo(this);
@@ -24,7 +29,7 @@ namespace WelcomeToHell.Controllers
 
         private void OnStampMessage(StampMessage stampMessage)
         {
-            if (hasStamp)
+            if (hasStamp && !placed)
             {
                 return;
             }
