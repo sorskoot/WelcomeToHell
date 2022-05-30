@@ -14,12 +14,14 @@ namespace WelcomeToHell
         {
             SnapIoc.Container.Register<Sorskoot.Ioc.ILogger, Sorskoot.Ioc.Logger>();
             SnapIoc.Container.Register<IGameState, GameState>();
+            
+            
         }
 
         private void Start()
         {
-            SnapIoc.Container.Resolve<IGameState>();
-            SnapIoc.Container.Resolve<IGameState>();
+            var state = SnapIoc.Container.Resolve<IGameState>();
+            state.Start();
         }
     }
 }

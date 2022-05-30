@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using WelcomeToHell.Controllers;
@@ -26,9 +28,15 @@ namespace WelcomeToHell.Controllers
 
         private void Start()
         {
+            MessageBroker.Default.Receive<NewDeceased>().Subscribe(OnNewDeceased).AddTo(this);
+        }
+
+        private void OnNewDeceased(NewDeceased newDeceased)
+        {
             Sprite randomSprite = photos[Random.Range(0, photos.Length)];
             image.sprite = randomSprite;
-            SinDescriptor sin = sins[Random.Range(0, sins.Length)];
+            var possibleSins = sins.ToList().Where(s => s.sin == newDeceased.sin).ToArray();
+            SinDescriptor sin = possibleSins[Random.Range(0, possibleSins.Length)];
             text.text = sin.message;
         }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Sorskoot.Ioc;
 using UniRx;
+using Random = UnityEngine.Random;
 
 namespace WelcomeToHell
 {
@@ -17,6 +18,7 @@ namespace WelcomeToHell
         void PlaceContractOnTable();
         void TakeContractFromTable();
         void Stamp(string stampName);
+        void Start();
     }
 
     public class GameState:IGameState
@@ -86,6 +88,12 @@ namespace WelcomeToHell
             contractOnTable.Value = false;
         }
 
+        public void NewDeceased()
+        {
+            Sins sin = (Sins)Random.Range(0, 7);
+            MessageBroker.Default.Publish(new NewDeceased(sin));
+        }
+        
         public void Stamp(string stampName)
         {
             // Only place stamp when contract is on the table
@@ -93,6 +101,14 @@ namespace WelcomeToHell
             {
                 MessageBroker.Default.Publish(new StampMessage(stampName));
             }
+        }
+
+        public void Start()
+        {
+            Scheduler.MainThread.Schedule(2000, () =>
+            {
+                NewDeceased();
+            });
         }
     }
 }

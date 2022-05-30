@@ -600,6 +600,7 @@ GameObject:
   - component: {fileID: 114879110}
   - component: {fileID: 114879109}
   - component: {fileID: 114879114}
+  - component: {fileID: 114879115}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -758,9 +759,9 @@ MonoBehaviour:
       all the time. I didn't care about anything else. I just wanted to be with my
       favorite person. And then one day, I woke up and I was a demon.
   - sin: 0
-    message: ' acted on my darkest desires. I ruined lives and hurt so many people
+    message: I acted on my darkest desires. I ruined lives and hurt so many people
       because of my need for sexual pleasure. I am a sick and twisted individual
-      who deserves to be in this place.'
+      who deserves to be in this place.
   - sin: 1
     message: I was so angry at my boss for yelling at me in front of everyone. I
       just couldn't help myself. I killed him with my bare hands. I felt so much
@@ -817,6 +818,18 @@ MonoBehaviour:
       of others because they weren't as good as me.
   text: {fileID: 792568444}
   image: {fileID: 41192707}
+--- !u!114 &114879115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114879108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22089142c5daad945a2aa385092be68b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &150143258
 GameObject:
   m_ObjectHideFlags: 0
